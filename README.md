@@ -14,4 +14,5 @@ We use the wikipedia's api (that be found here: https://github.com/martin-majlis
 (to be found here: https://gist.github.com/genekogan/ebd77196e4bf0705db51f86431099e57)
 
 Author: Cédric Colas
+
 Email: cdric.colas@gmail.com
