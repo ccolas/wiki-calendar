@@ -74,6 +74,9 @@ def generate_keywords(output_dir,
                         reject=True
                         break
 
+            if reject:
+                break
+
             # check whether next page contains more than 10 links
             if len(sorted(get_links(candidate_page).keys())) < 10:
                 reject = True
