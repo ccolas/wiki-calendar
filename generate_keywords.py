@@ -87,7 +87,7 @@ def generate_keywords(output_dir,
                 calendar_keywords.append(calendar_keywords[-1])
                 print(calendar_keywords[-1])
                 next_page = previous_page
-                filename= '/Day' + str(i) + '_' + calendar_keywords[-1]
+                filename= '/Day' + str(day) + '_' + calendar_keywords[-1]
                 reject = get_google_image(calendar_keywords[-1], output_dir, filename, shuffle_all=shuffle_all)
 
         current_page = next_page
