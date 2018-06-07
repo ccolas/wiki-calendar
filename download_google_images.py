@@ -3,6 +3,7 @@ import itertools
 from urllib.request import urlopen, Request
 import random
 from bs4 import BeautifulSoup
+from PIL import Image
 
 # from https://gist.github.com/genekogan/ebd77196e4bf0705db51f86431099e57
 
@@ -24,7 +25,7 @@ def extract_images_from_soup(soup):
     return link_type_records
 
 def extract_images(query, num_images):
-    url = get_query_url(query)
+    url = get_query_url(query).encode('utf-8').decode('ascii', 'ignore')
     soup = get_soup(url, REQUEST_HEADER)
     link_type_records = extract_images_from_soup(soup)
     return itertools.islice(link_type_records, num_images)
@@ -81,10 +82,13 @@ def get_google_image(query, save_directory, filename, num_images=40):
     for i in range(n_images):
         try:
             download_images_to_dir(imgs[i], save_directory, filename)
+            # try opening it again..
+            save_path = save_directory + filename
+            image = Image.open(save_path)
             print('Image downloaded successfully')
             return False
         except:
-            print('Image downloading failed, try to download image'+str(i),'out of', str(n_images), 'possibilities.')
+            print('Image downloading failed, try to download image '+str(i+1),'out of', str(n_images), 'possibilities.')
     print('Failed to download an image, changing keyword')
     return True
 
