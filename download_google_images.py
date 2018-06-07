@@ -16,7 +16,9 @@ def get_soup(url, header):
     return BeautifulSoup(response, 'html.parser')
 
 def get_query_url(query):
-    return "https://www.google.co.in/search?q=%s&source=lnms&tbm=isch&tbs=sur:fc,isz:l" % query
+    return "https://www.google.co.in/search?q=%s&source=lnms&tbm=isch&tbs=isz:l" % query
+    # return "https://www.google.co.in/search?q=%s&source=lnms&tbm=isch&tbs=sur:fc,isz:l" % query # use this line to have images free of rights
+
 
 def extract_images_from_soup(soup):
     image_elements = soup.find_all("div", {"class": "rg_meta"})
@@ -48,7 +50,7 @@ def download_images_to_dir(image, save_directory, filename):
         save_image(raw_image, image[1], save_directory, filename)
 
 
-def get_google_image(query, save_directory, filename, num_images=40):
+def get_google_image(query, save_directory, filename, shuffle_all=False, num_images=40):
     query = '+'.join(query.split())
 
     # randomise order of first 15, respecting the first 10
@@ -56,22 +58,28 @@ def get_google_image(query, save_directory, filename, num_images=40):
         images = extract_images(query, num_images)
         imgs = []
         # remove all images that are not jpeg
+        n_imgs = 0
         for ind, item in enumerate(images):
+            n_imgs += 1
             if item[1] in ['jpg','JPG','jpeg','JPEG']:
                 imgs.append(item)
         n_images = len(imgs)
         if n_images == 0:
-            print('Invalid image format in the first', num_images, 'images')
+            print('Invalid image format in the first', n_imgs, 'images')
             raise IOError
-        if n_images > 10:
-            first_10 = list(range(10))
-            random.shuffle(first_10)
-            inds_sup_10 = list(range(10,n_images))
-            random.shuffle(inds_sup_10)
-            inds = first_10 + inds_sup_10
-        else:
+        if shuffle_all:
             inds = list(range(n_images))
             random.shuffle(inds)
+        else:
+            if n_images > 10:
+                first_10 = list(range(10))
+                random.shuffle(first_10)
+                inds_sup_10 = list(range(10,n_images))
+                random.shuffle(inds_sup_10)
+                inds = first_10 + inds_sup_10
+            else:
+                inds = list(range(n_images))
+                random.shuffle(inds)
         imgs = [imgs[i] for i in inds]
 
     except:

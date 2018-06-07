@@ -14,6 +14,7 @@ language = 'en' #'en' #'fr'
 seed_page_id = 'Flower' # go on wikipedia and copy past last part of URL..
 n_days = 200
 
+shuffle_all = True # if false, pick image inside 10 first in priority
 
 # list of unwanted substrings
 unwanted_strings = ['wiki','Wiki','Category', 'List', 'Template', 'Help', 'ISO', 'User']
@@ -40,7 +41,8 @@ calendar_keywords= generate_keywords(output_dir,
                                      language=language,
                                      seed_page_id = seed_page_id,
                                      n_days=n_days,
-                                     unwanted_strings=unwanted_strings
+                                     unwanted_strings=unwanted_strings,
+                                     shuffle_all=shuffle_all
                                      )
 # save to text file
 with open(output_dir+'/calendar_keywords', 'w') as f:

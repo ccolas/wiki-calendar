@@ -30,6 +30,7 @@ def generate_keywords(output_dir,
                       seed_page_id='chat',
                       n_days=5,
                       unwanted_strings=None,
+                      shuffle_all=False
                       ):
 
 
@@ -62,7 +63,8 @@ def generate_keywords(output_dir,
                                                                                 unwanted_strings,
                                                                                 calendar_keywords,
                                                                                 output_dir,
-                                                                                day)
+                                                                                day,
+                                                                                shuffle_all)
         if success:  # save in case next page is not good enough
             previous_page = current_page
 
@@ -77,7 +79,8 @@ def generate_keywords(output_dir,
                                                                                    unwanted_strings,
                                                                                    calendar_keywords,
                                                                                    output_dir,
-                                                                                   day)
+                                                                                   day,
+                                                                                   shuffle_all)
             if success:
                 previous_page = current_page
             else:
@@ -85,7 +88,7 @@ def generate_keywords(output_dir,
                 print(calendar_keywords[-1])
                 next_page = previous_page
                 filename= '/Day' + str(i) + '_' + calendar_keywords[-1]
-                reject = get_google_image(calendar_keywords[-1], output_dir, filename)
+                reject = get_google_image(calendar_keywords[-1], output_dir, filename, shuffle_all=shuffle_all)
 
         current_page = next_page
 
@@ -97,7 +100,7 @@ def generate_keywords(output_dir,
     return calendar_keywords[1:]
 
 
-def find_keyword_and_image_in_links(links, unwanted_strings, calendar_keywords, output_dir, day):
+def find_keyword_and_image_in_links(links, unwanted_strings, calendar_keywords, output_dir, day, shuffle_all):
 
 
     list_keys = sorted(links.keys())
@@ -132,7 +135,7 @@ def find_keyword_and_image_in_links(links, unwanted_strings, calendar_keywords, 
             break
         # check that we can download a corresponding picture
         filename = '/Day' + str(day) + '_' + candidate_keyword
-        reject = get_google_image(candidate_keyword, output_dir, filename)
+        reject = get_google_image(candidate_keyword, output_dir, filename, shuffle_all=shuffle_all)
 
         # if keyword fulfills all requirements and if we found a picture
         if not reject:
