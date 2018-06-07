@@ -6,28 +6,27 @@ from PIL import Image, ImageFont, ImageDraw
 # Configurations
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-calendar_id = '3'
-path_to_project = '/home/flowers/PycharmProjects/'
+calendar_id = '1'
+path_to_project = './'
 
 # parameters for keyword generation
 language = 'en' #'en' #'fr'
 seed_page_id = 'Flower' # go on wikipedia and copy past last part of URL..
-n_days = 10
-mode = 'v1'
-# 'v1'  # choose a random link from page, check it isn't already in the list
+n_days = 200
+
 
 # list of unwanted substrings
 unwanted_strings = ['wiki','Wiki','Category', 'List', 'Template', 'Help', 'ISO', 'User']
 
 # parameters for image fetching
-output_dir = path_to_project+'wikiBingCalendar/generated_calendars/Calendar_'+calendar_id #default output dir
+output_dir = path_to_project+'generated_calendars/Calendar_'+calendar_id #default output dir
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 # color option: 'BW', 'orange', 'red', b='blue', 'green', None
 color_opt = None
 
 #parameters images
-path_font = path_to_project + 'wikiBingCalendar/NotoSans_Bold.ttf'
+path_font = path_to_project + 'NotoSans_Bold.ttf'
 width = 1170
 height = 824
 margin = int(height/10)
@@ -37,24 +36,21 @@ margin = int(height/10)
 # Get keywords and semantical links
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-calendar_keywords, shared_categories = generate_keywords(output_dir,
-                                                         language=language,
-                                                         seed_page_id = seed_page_id,
-                                                         n_days=n_days,
-                                                         mode=mode,
-                                                         unwanted_strings=unwanted_strings
-                                                         )
+calendar_keywords= generate_keywords(output_dir,
+                                     language=language,
+                                     seed_page_id = seed_page_id,
+                                     n_days=n_days,
+                                     unwanted_strings=unwanted_strings
+                                     )
 # save to text file
 with open(output_dir+'/calendar_keywords', 'w') as f:
     for item in calendar_keywords:
         f.write("%s\n" % item)
-with open(output_dir+'/shared_categories', 'w') as f:
-    for item in shared_categories:
-      f.write("%s\n" % item)
+
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-# Add text on images
+# Format calendar
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 with open (output_dir+'/calendar_keywords', "r") as myfile:
     calendar_keywords=myfile.readlines()

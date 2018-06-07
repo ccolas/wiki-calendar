@@ -47,18 +47,20 @@ def download_images_to_dir(image, save_directory, filename):
         save_image(raw_image, image[1], save_directory, filename)
 
 
-def get_google_image(query, save_directory, filename, num_images=20):
+def get_google_image(query, save_directory, filename, num_images=40):
     query = '+'.join(query.split())
+
     # randomise order of first 15, respecting the first 10
     try:
         images = extract_images(query, num_images)
         imgs = []
+        # remove all images that are not jpeg
         for ind, item in enumerate(images):
             if item[1] in ['jpg','JPG','jpeg','JPEG']:
                 imgs.append(item)
         n_images = len(imgs)
         if n_images == 0:
-            print('Invalid image format')
+            print('Invalid image format in the first', num_images, 'images')
             raise IOError
         if n_images > 10:
             first_10 = list(range(10))
@@ -67,12 +69,14 @@ def get_google_image(query, save_directory, filename, num_images=20):
             random.shuffle(inds_sup_10)
             inds = first_10 + inds_sup_10
         else:
-            inds = random.shuffle(list(range(n_images)))
+            inds = list(range(n_images))
+            random.shuffle(inds)
         imgs = [imgs[i] for i in inds]
 
     except:
         print('Error in image extraction')
         return True
+
     # try to download images until one successful download
     for i in range(n_images):
         try:
@@ -80,8 +84,8 @@ def get_google_image(query, save_directory, filename, num_images=20):
             print('Image downloaded successfully')
             return False
         except:
-            print('Failed to return image, try '+str(i))
-    print('Failed to download images, change keyword')
+            print('Image downloading failed, try to download image'+str(i),'out of', str(n_images), 'possibilities.')
+    print('Failed to download an image, changing keyword')
     return True
 
 
