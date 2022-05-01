@@ -1,5 +1,5 @@
 # wiki-calendar
-Perform a semantical exploration of Wikipedia's content and create a calendar of corresponding illustrations.
+Perform a semantic exploration of Wikipedia's content and create a calendar of corresponding illustrations.
 
 The script generate_calendar can be run to perform a semantical exploration of Wikipedia's pages and create a calendar
 of corresponding illustrations. Select the number of days, the first wikipedia page and the language as parameters.

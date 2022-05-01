@@ -2,22 +2,23 @@ from generate_keywords import *
 import os
 from PIL import Image, ImageFont, ImageDraw
 
+
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Configurations
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-calendar_id = '1'
-path_to_project = './'
+calendar_id = 'calendar2'
+path_to_project = '/home/cedric/Documents/Perso/Scratch/wiki-calendar/'
 
 # parameters for keyword generation
 language = 'en' #'en' #'fr'
-seed_page_id = 'Flower' # go on wikipedia and copy past last part of URL..
-n_days = 200
+seed_page_id = 'wikipedia' # go on wikipedia and copy past last part of URL..
+n_days = 365
 
 shuffle_all = True # if false, pick image inside 10 first in priority
 
 # list of unwanted substrings
-unwanted_strings = ['wiki','Wiki','Category', 'List', 'Template', 'Help', 'ISO', 'User']
+unwanted_strings = ['wiki','Wiki','Category', 'List', 'Template', 'Help', 'ISO', 'User','Talk','Portal']
 
 # parameters for image fetching
 output_dir = path_to_project+'generated_calendars/Calendar_'+calendar_id #default output dir
@@ -27,10 +28,14 @@ if not os.path.exists(output_dir):
 color_opt = None
 
 #parameters images
-path_font = path_to_project + 'NotoSans_Bold.ttf'
-width = 1170
-height = 824
+path_font1 = path_to_project + 'segoeuib.ttf'
+path_font2 = path_to_project + 'segoeuisl.ttf'
+width = 2000
+height = 1414
 margin = int(height/10)
+interline = 5
+size_font1 = 65
+size_font2 = 50
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -83,12 +88,36 @@ for i in range(n_days):
     # paste picture onto white background
     img.paste(image,(left_pos,top_pos))
 
-    legend = 'Day '+str(day)+': '+keyword
-    font_type = ImageFont.truetype(path_font,26)
-    w_text, h_text = font_type.getsize(legend)
-    left_pos_txt = int((width-w_text)/2)
+   #legend
     text_img = Image.new('RGBA', img.size, (255,255,255,0))
     draw = ImageDraw.Draw(text_img)
-    draw.text(xy=(left_pos_txt,height-margin + int((margin-h_text)/2)), fill=(0,0,0,255), text=legend, font=font_type)
+    
+    legend1 = str(day)
+    legend2 = keyword
+    font_type1 = ImageFont.truetype(path_font1,size_font1)
+    font_type2 = ImageFont.truetype(path_font2, size_font2)
+    w_l1, h_l1 = font_type1.getsize(legend1)
+    w_l2, h_l2 = font_type2.getsize(legend2)
+
+    
+    left_pos_l1 = int((width-w_l1)/2)
+    left_pos_l2 = int((width-w_l2)/2)
+    
+   
+    # legend2=str(legend2.encode('utf-8'))
+    if '–' in legend2:
+        legend2 = '-'.join(legend2.split('–'))
+    try:
+        legend2.encode("windows-1252").decode("utf-8", errors='replace')
+    except:
+        pass
+
+
+    # legend2 = seed_page_id
+    draw.text(xy=(left_pos_l1,height-margin/2 - h_l1-interline/2), fill=(0,0,0,255), text=legend1, font=font_type1)
+    draw.text(xy=(left_pos_l2,height-margin/2 +interline/2), fill=(0,0,0,255), text=legend2, font=font_type2)
+   
+    #save
     out = Image.alpha_composite(img, text_img)
-    out.save(output_dir+'/Day_'+str(day)+'.png')
+    out = out.convert('RGB')
+    out.save(output_dir+'/Day_'+str(365-day)+'.jpg')

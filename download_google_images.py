@@ -16,8 +16,9 @@ def get_soup(url, header):
     return BeautifulSoup(response, 'html.parser')
 
 def get_query_url(query):
-    return "https://www.google.co.in/search?q=%s&source=lnms&tbm=isch&tbs=isz:l" % query
-    # return "https://www.google.co.in/search?q=%s&source=lnms&tbm=isch&tbs=sur:fc,isz:l" % query # use this line to have images free of rights
+    url = "https://www.google.com/search?q=%s&hl=en&source=lnms&tbm=isch&tbs=isz:l" % query
+    return url
+     # return "https://www.google.co.in/search?q=%s&source=lnms&tbm=isch&tbs=sur:fc,isz:l" % query # use this line to have images free of rights
 
 
 def extract_images_from_soup(soup):
@@ -26,8 +27,15 @@ def extract_images_from_soup(soup):
     link_type_records = ((d["ou"], d["ity"]) for d in metadata_dicts)
     return link_type_records
 
+def new_extract_images_from_soup(soup):
+    image_elements = soup.find_all("img")
+    urls = [im['src'] for im in image_elements if 'encrypted-tbn0' in im['src']]
+    urls = [bytes(url, 'ascii').decode('unicode-escape') for url in urls]
+    urls = [bytes(url, 'ascii').decode('unicode-escape') for url in urls]  # need two decodings
+
 def extract_images(query, num_images):
     url = get_query_url(query).encode('utf-8').decode('ascii', 'ignore')
+    print(url)
     soup = get_soup(url, REQUEST_HEADER)
     link_type_records = extract_images_from_soup(soup)
     return itertools.islice(link_type_records, num_images)

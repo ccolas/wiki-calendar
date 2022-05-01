@@ -1,7 +1,7 @@
 from WikiAPI.wikipediaapi.wikipedia import *
 import numpy as np
 import random
-from download_google_images import *
+from new_download_google_images import get_google_image
 import copy
 
 
