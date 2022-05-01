@@ -1,18 +1,17 @@
 # wiki-calendar
-Perform a semantic exploration of Wikipedia's content and create a calendar of corresponding illustrations.
+The Wikipedia Visual Exploration project embarks you on a visual random exploration of Wikipedia.
 
-The script generate_calendar can be run to perform a semantical exploration of Wikipedia's pages and create a calendar
-of corresponding illustrations. Select the number of days, the first wikipedia page and the language as parameters.
+Wikipedia is a multi-lingual encyclopedia built on the massive collaborative efforts of millions of Wikipedians. It’s perhaps the best example of successful collaborative projects on the Internet. There, you can learn about almost everything, EVERYTHING. Scary, isn’t it?
 
-The script finds a random link in the wikipedia page, then goes to Google Image and selects on of the 10 first images.
-this image, the day and the keyword are then printed on a white page, to become a calendar page.
+When confronted to immensity, one can feel paralysed. Where should we start?
 
-This can be seen as an artistical project, aiming at exploring human knowledge as stored in Wikipedia by jumping from links
-to links, generally related semantically. 
+Well, we can start somewhere, anywhere. From there, we take a small step, in any direction. Then, another one.
 
-We use the wikipedia's api (that be found here: https://github.com/martin-majlis/Wikipedia-API) and script to scrap Google Images
-(to be found here: https://gist.github.com/genekogan/ebd77196e4bf0705db51f86431099e57)
+This project proposes such random explorations of Wikipedia. Starting from the Wikipedia Wikipedia page, it takes a new step every day. Each day, it enters one of the links contained in the previous page and jumps to another, semantically related topic. Each day, it illustrates the topic with a corresponding image taken from a google search. One after the other, for a year.
+
+Find a demo on [my website](https://ccolas.github.io/project/wikiexploration)
+
+We use the [wikipedia's api](https://github.com/martin-majlis/Wikipedia-API) and script to scrap Google Images adapted from [there](https://github.com/ohyicong/Google-Image-Scraper)
 
 Author: Cédric Colas
-
 Email: cdric.colas@gmail.com
