@@ -1,3 +1,5 @@
+import os
+
 from WikiAPI.wikipediaapi.wikipedia import *
 import numpy as np
 import random
@@ -137,8 +139,11 @@ def find_keyword_and_image_in_links(links, unwanted_strings, calendar_keywords, 
         filename = '/Day' + str(day) + '_' + candidate_keyword
         reject = get_google_image(candidate_keyword, output_dir, filename, shuffle_all=shuffle_all)
 
+        # check that image exists
+        list_files = os.listdir(output_dir)
+
         # if keyword fulfills all requirements and if we found a picture
-        if not reject:
+        if not reject and filename[1:] + '.jpg' in list_files:
             calendar_keywords.append(candidate_keyword)  # add keyword to list
             print(calendar_keywords[-1])
             next_page = candidate_page

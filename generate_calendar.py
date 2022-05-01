@@ -15,7 +15,7 @@ language = 'en' #'en' #'fr'
 seed_page_id = 'wikipedia' # go on wikipedia and copy past last part of URL..
 n_days = 365
 
-shuffle_all = True # if false, pick image inside 10 first in priority
+shuffle_all = False # if false, pick image inside 10 first in priority
 
 # list of unwanted substrings
 unwanted_strings = ['wiki','Wiki','Category', 'List', 'Template', 'Help', 'ISO', 'User','Talk','Portal']
@@ -49,18 +49,27 @@ calendar_keywords= generate_keywords(output_dir,
                                      unwanted_strings=unwanted_strings,
                                      shuffle_all=shuffle_all
                                      )
-# save to text file
-with open(output_dir+'/calendar_keywords', 'w') as f:
-    for item in calendar_keywords:
-        f.write("%s\n" % item)
+
 
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Format calendar
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-with open (output_dir+'/calendar_keywords', "r") as myfile:
-    calendar_keywords=myfile.readlines()
+
+def find_keywords(output_dir):
+    list_files = os.listdir(output_dir)
+    keywords = []
+    for i in range(365):
+        file = [f for f in list_files if f'Day{i+1}_' in f]
+        if len(file) == 1:
+            assert len(file) == 1
+            file = file[0]
+            keywords.append('_'.join(file.split('_')[1:])[:-4])
+    return keywords
+
+calendar_keywords = find_keywords(output_dir)
+
 for i in range(len(calendar_keywords)):
     calendar_keywords[i] = calendar_keywords[i].replace('\n', '')
 

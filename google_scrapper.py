@@ -76,6 +76,10 @@ class GoogleImageScraper():
 
         if self.shuffle_all:
             np.random.shuffle(urls)
+        else:
+            first_ten = urls[:10].copy()
+            np.random.shuffle(first_ten)
+            urls[:10] = first_ten
 
         image_saved = False
         for url in urls:
